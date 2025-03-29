@@ -1,0 +1,23 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>类型</th>
+        <th>字典 key</th>
+        <th>字典 value</th>
+        <th>字典 u_key</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for dict in pagination %}
+        <tr>
+            <th scope="row">{{ dict.id }}</th>
+            <td>{{ dict.type }}</td>
+            <td>{{ dict.dKey }}</td>
+            <td>{{ dict.dValue }}</td>
+            <td>{{ dict.uKey }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ knp_pagination_render(pagination) }}

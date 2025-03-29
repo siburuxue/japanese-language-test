@@ -1,0 +1,73 @@
+{% extends './admin/base/base.html.twig' %}
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            规则列表
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="input-Default" class="col-sm-1 control-label">规则名字</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="role-name">
+                                </div>
+                                <label for="input-Default" class="col-sm-1 control-label">路由</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="route-name">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0">
+                                <div class="col-sm-12 control-label">
+                                    <button type="reset" class="btn btn-default" id="clear"><i class="fa fa-undo"></i> 清空</button>
+                                    {% if hasPermission('ROLE_LIST') %}
+                                    <button type="button" class="btn btn-primary" id="search"><i class="fa fa-search"></i> 查询</button>
+                                    {% endif %}
+                                    {% if hasPermission('ROLE_ADD') %}
+                                    <a href="{{ path(constant_route('ROLE_ADD')) }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        {% if hasPermission('ROLE_LIST') %}
+                        <div id="role-list" class="dataTables_wrapper table-box" data-auto-load="true" data-load-url="{{ path(constant_route('ROLE_LIST')) }}" data-param="{}"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body" id="permission-tree"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function (){
+            $(document).on('click','.role-permission',function(){
+                let url = $(this).data('url');
+                $('#permission-tree').load(url);
+            });
+            $('#search').click(function(){
+                let routeName = $('#route-name').val();
+                let roleName = $('#role-name').val();
+                $('#role-list').data('param',{routeName, roleName}).loadData();
+                $('#permission-tree').children().remove();
+            });
+        });
+    </script>
+{% endblock %}

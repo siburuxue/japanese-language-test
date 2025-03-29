@@ -1,0 +1,69 @@
+{% extends './admin/base/base.html.twig' %}
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            后台用户列表
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+
+                                <label for="username" class="col-sm-1 control-label">用户名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="username">
+                                </div>
+                                <label for="nickname" class="col-sm-1 control-label">昵称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="nickname">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0">
+                                <label for="group-name" class="col-sm-1 control-label">用户组名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="group-name">
+                                </div>
+                                <div class="col-sm-6 control-label">
+                                    <button type="reset" class="btn btn-default" id="clear"><i class="fa fa-undo"></i> 清空</button>
+                                    {% if hasPermission('USER_LIST') %}
+                                    <button type="button" class="btn btn-primary" id="search"><i class="fa fa-search"></i> 查询</button>
+                                    {% endif %}
+                                    {% if hasPermission('USER_ADD') %}
+                                    <a href="{{ path(constant_route('USER_ADD')) }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        {% if hasPermission('USER_LIST') %}
+                        <div id="user-list" class="dataTables_wrapper table-box" data-auto-load="true" data-load-url="{{ path(constant_route('USER_LIST')) }}" data-param="{}"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function (){
+            $('#search').click(function(){
+                let groupName = $('#group-name').val().trim();
+                let username = $('#username').val().trim();
+                let nickname = $('#nickname').val().trim();
+                $('#user-list').data('param', {groupName, username, nickname}).loadData();
+            });
+        });
+    </script>
+{% endblock %}

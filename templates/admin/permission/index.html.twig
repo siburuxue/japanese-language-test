@@ -1,0 +1,18 @@
+{% extends './admin/base/base.html.twig' %}
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            权限列表
+        </h3>
+    </div>
+    <div id="main-wrapper">
+
+        <div class="row">
+            <div class="col-md-12">
+                {% if hasPermission('PERMISSION_TREE') %}
+                <div class="panel-body" data-auto-load="true" data-load-url="{{ path(constant_route("PERMISSION_TREE")) }}"></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>用户ID</th>
+        <th>用户名</th>
+        <th style="width: 70%">操作</th>
+        <th>操作时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for log in pagination %}
+        <tr>
+            <th scope="row">{{ log.id }}</th>
+            <td>{{ log.uid }}</td>
+            <td>{{ log.username }}</td>
+            <td>{{ log.content|raw }}</td>
+            <td>{{ log.createTime|date('Y-m-d H:i:s') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ knp_pagination_render(pagination) }}

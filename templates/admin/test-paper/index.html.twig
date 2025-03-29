@@ -1,0 +1,259 @@
+{% extends './admin/base/base.html.twig' %}
+{% block content %}
+    <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/bootstrap-fileinput/css/fileinput.min.css') }}" media="all" rel="stylesheet"
+          type="text/css"/>
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            用户题库列表
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="owner" class="col-sm-1 control-label">上传用户：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="owner">
+                                </div>
+                                <label for="paper-difficulty" class="col-sm-1 control-label">难度：</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" id="paper-difficulty">
+                                        <option value="">请选择...</option>
+                                        {% for k,v in difficulty %}
+                                            <option value="{{ k }}">{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="title" class="col-sm-1 control-label">试卷标题：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="title">
+                                </div>
+                                <div class="col-sm-6 control-label">
+                                    <button type="reset" class="btn btn-default" id="clear"><i class="fa fa-undo"></i>
+                                        清空
+                                    </button>
+                                    {% if hasPermission('TEST_PAPER_LIST') %}
+                                        <button type="button" class="btn btn-primary" id="search"><i
+                                                    class="fa fa-search"></i> 查询
+                                        </button>
+                                    {% endif %}
+                                    {% if hasPermission('TEST_PAPER_INSERT') %}
+                                        <button type="button" class="btn btn-primary" id="add"><i
+                                                    class="fa fa-plus"></i> 添加题库
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        {% if hasPermission('TEST_PAPER_LIST') %}
+                            <div id="test-paper-list" class="dataTables_wrapper table-box" data-auto-load="true"
+                                 data-load-url="{{ path(constant_route('TEST_PAPER_LIST')) }}" data-param="{}"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row hidden center" id="add-box">
+            <div class="col-md-12">
+                <div class="panel panel-white" style="border:0">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="difficulty" class="col-sm-2 control-label">难度：</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="difficulty">
+                                        {% for k,v in difficulty %}
+                                            <option value="{{ k }}">{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="content" class="col-sm-2 control-label">题库内容：</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" rows=10 id="content"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row hidden center" id="difficulty-box">
+            <div class="col-md-12">
+                <div class="panel panel-white" style="border:0">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="difficulty" class="col-sm-2 control-label">难度：</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="set-difficulty">
+                                        {% for k,v in difficulty %}
+                                            <option value="{{ k }}">{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row hidden center" id="listening-recording-box">
+            <div class="col-md-12">
+                <div class="panel panel-white" style="border:0">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="upload-listening-recording" class="col-sm-4 control-label">上传听力音频：</label>
+                                <div class="col-sm-8">
+                                    <input type="file" id="upload-listening-recording" name="upload-listening-recording" data-uploading="{}" data-oss-upload="true" data-file-input="true" data-id="" data-url-prefix="listening">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-bundle/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-fileinput/js/plugins/piexif.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-fileinput/js/plugins/sortable.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-fileinput/js/fileinput.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-fileinput/js/locales/zh.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-fileinput/themes/gly/theme.min.js') }}"></script>
+
+    <!-- ali-oss -->
+    {{ encore_entry_script_tags('app') }}
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            $('#search').click(function () {
+                let owner = $('#owner').val().trim();
+                let difficulty = $('#paper-difficulty').val();
+                let title = $('#title').val().trim();
+                $('#test-paper-list').data('param', {owner, difficulty, title}).loadData();
+            });
+            $('#add').click(function () {
+                layer.open({
+                    type: 1,
+                    title: "添加题库",
+                    area: ["50%", "45%"],
+                    content: $('#add-box'),
+                    btn: ["保存", "取消"],
+                    success: function () {
+                        $('#add-box').removeClass('hidden');
+                    },
+                    yes: function (index) {
+                        if ($('#content').val().trim() === "") {
+                            layer.msg("题库内容不能为空！", {time: 1000}, function () {
+                                $('#content').focus();
+                            });
+                        } else {
+                            let difficulty = $('#difficulty').val();
+                            let content = $('#content').val();
+                            Tools.ajax({
+                                url: "{{ path(constant_route('TEST_PAPER_INSERT')) }}",
+                                data: {difficulty, content},
+                                success: function (res) {
+                                    layer.msg(res.msg, {time: 1500}, function () {
+                                        if (res.status) {
+                                            layer.close(index);
+                                            $('#test-paper-list').reload();
+                                        }
+                                    });
+                                }
+                            })
+                        }
+                    },
+                    cancel: function (index) {
+                        layer.close(index);
+                    }
+                });
+            });
+            $(document).on('click', '.difficulty', function () {
+                let id = $(this).data('id');
+                let difficulty = $(this).data('difficulty');
+                let url = "{{ path(constant_route('TEST_PAPER_SET_DIFFICULTY')) }}";
+                layer.open({
+                    type: 1,
+                    title: "设置难度",
+                    area: ["32%", "17%"],
+                    content: $('#listening-recording-box'),
+                    btn: ["保存", "取消"],
+                    success: function () {
+                        $('#set-difficulty').val(difficulty);
+                        $('#listening-recording-box').removeClass('hidden');
+                    },
+                    yes: function (index) {
+                        let difficulty = $('#set-difficulty option:selected').val();
+                        Tools.ajax({
+                            url,
+                            data: {id, difficulty},
+                            success: function (res) {
+                                layer.msg(res.msg, {time: 1000}, function () {
+                                    layer.close(index);
+                                    $('#test-paper-list').reload();
+                                })
+                            }
+                        });
+                    },
+                    cancel: function (index) {
+                        layer.close(index);
+                    }
+                });
+            });
+            $(document).on('click', '.listening', function () {
+                let id = $(this).data('id');
+                let url = "{{ path(constant_route('TEST_PAPER_UPLOAD_LISTENING_RECORDING')) }}";
+                layer.open({
+                    type: 1,
+                    title: "上传听力音频",
+                    area: ["50%", "50%"],
+                    content: $('#listening-recording-box'),
+                    btn: ["保存", "取消"],
+                    success: function () {
+                        $('#listening-recording-box form')[0].reset();
+                        $('#upload-listening-recording').data('id', id);
+                        $('#listening-recording-box').removeClass('hidden');
+                    },
+                    yes: function (index) {
+                        let ossUrl = $('#hid_oss_url_upload-listening-recording').val();
+                        Tools.ajax({
+                            url,
+                            data: {id, ossUrl},
+                            success:function (res) {
+                                layer.msg(res.msg, {time: 1000}, function () {
+                                    layer.close(index);
+                                    $('#test-paper-list').reload();
+                                })
+                            }
+                        });
+                    },
+                    cancel: function (index) {
+                        layer.close(index);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

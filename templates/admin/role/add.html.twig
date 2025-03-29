@@ -1,0 +1,76 @@
+{% extends './admin/base/base.html.twig' %}
+
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            新增规则
+            {% if hasPermission('ROLE_INDEX') %}
+            <a href="{{ path(constant_route('ROLE_INDEX')) }}" class="btn btn-primary"><i class="fa fa-undo"></i>返回</a>
+            {% endif %}
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">规则名称：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" id="role-name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-Default" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="reset" id="clear" class="btn btn-default"><i class="fa fa-undo"></i> 重置</button>
+                                    {% if hasPermission('ROLE_INSERT') %}
+                                    <button type="button" class="btn btn-primary" id="save"><i class="fa fa-save"></i> 保存</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                {% if hasPermission('PERMISSION_TREE') %}
+                <div class="panel-body" id="permission-tree" data-auto-load="true" data-load-url="{{ path(constant_route("PERMISSION_TREE"), {type: 'checkbox'}) }}"></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            $('#clear').click(function(){
+                $('#permission-tree').reload();
+            });
+            $('#save').click(function () {
+                let permissionId = getSelectedPermission()
+                let roleName = $('#role-name').val().trim();
+                if(roleName === ""){
+                    layer.msg("请输入规则名",{timeout:1500},function(){
+                        $('#role-name').focus();
+                    });
+                    return false;
+                }
+                if(permissionId.length === 0){
+                    layer.msg("请选择权限",{timeout:1500});
+                    return false;
+                }
+                Tools.ajax({
+                    url:"{{ path(constant_route('ROLE_INSERT')) }}",
+                    data:{permissionId, roleName},
+                    success:function(res){
+                        layer.msg(res.msg,{time:1500},function(){
+                            window.location.href = '{{ path(constant_route('ROLE_INDEX')) }}';
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

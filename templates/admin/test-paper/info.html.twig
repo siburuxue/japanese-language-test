@@ -1,0 +1,333 @@
+{% extends './admin/base/base.html.twig' %}
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            试卷详情
+            {% if hasPermission('TEST_PAPER') %}
+            <a href="{{ path(constant_route('TEST_PAPER')) }}" class="btn btn-primary"><i class="fa fa-undo"></i>返回</a>
+            {% endif %}
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <h2 class="col-sm-12 middle strong">{{ info.title }}</h2>
+                            </div>
+                            <div class="form-group">
+                                <h4 class="col-sm-12 strong">注意事项：
+                                    <button type="button" class="btn btn-primary btn-xs show-answer" data-status="0">显示答案</button>、
+                                </h4>
+                                <div class="col-sm-12">1. 本试卷满分 150 分；考试用时 120 分钟。</div>
+                                <div class="col-sm-12">2. 本试卷分四部分,第一部分听力（共 30 分），第二、三、四部分笔试（共 120 分）。</div>
+                                <div class="col-sm-12">3. 答卷前，考生务必将自己的姓名，考号填写在答题卡上。</div>
+                                <div class="col-sm-12">4. 回答选择题时，选出每小题答案后，用铅笔把答题卡上对应题目的答案标号涂黑。如需
+                                    改动，用橡皮擦干净后，再选涂其它答案标号。回答非选择题时，将答案写在答题卡上。
+                                    写在本试卷上无效。</div>
+                                <div class="col-sm-12">5. 考试结束后，将答题卡交监考老师。</div>
+                            </div>
+                            <div class="form-group">
+                                <h3 class="col-sm-12 strong">
+                                    第一部分 听力（共两节，满分 30 分）
+                                    <button type="button" class="btn btn-primary btn-xs show-answer-all" data-type="listening" data-status="0">显示答案</button>、
+                                </h3>
+                                <div class="col-sm-12">回答听力部分时，请先将答案标在试卷上。听力部分结束前，你将有两分钟的时间将试
+                                    卷上的答案转涂到答题卡上。</div>
+                            </div>
+                            <div class="form-group">
+                                <h3 class="col-sm-12 strong">
+                                    第一节（共 5 小题：每小题 1.5 分，满分 7.5 分）
+                                </h3>
+                                <div class="col-sm-12">听下面 5 段录音，每段录音后有 1 个小题，从题中所给的 A、B、C 三个选项中选出
+                                    最佳选项。听完每段录音后，你都有 10 秒钟的时间回答该小题和阅读下一小题。每段录音
+                                    仅读一遍。</div>
+                            </div>
+                            {% for k,v in range(0,4) %}
+                                {% set question =  info.testPaperJson.output.listening[v] %}
+                                <div class="form-group">
+                                    <div class="col-sm-12 question" data-answer="{{ question['answer'] }}">
+                                        <label class="strong">{{ question['q_no'] }}. </label>&nbsp;&nbsp;{{ question['question'] }}
+                                        <button type="button" class="btn btn-primary btn-xs listening-btn show-select-answer" data-status="0">显示答案</button>
+                                    </div>
+                                    {% for k1,v1 in question['options'] %}
+                                        <div class="col-sm-12 option {{ v1['letter'] }}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="strong">{{ v1['letter'] }}</label>. {{ v1['text'] }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <h3 class="col-sm-12 strong">第二节（共 15 小题：每小题 1.5 分，满分 22.5 分）</h3>
+                                <div class="col-sm-12">听下面 5 段录音，每段录音后有几个小题，从题中所给的 A、B、C 三个选项中选出
+                                    最佳选项。听每段录音前，你将有时间阅读各个小题，每小题 5 秒钟；听完后，各小题将
+                                    给出 5 秒钟的作答时间。每段录音读两遍。</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12"><br>听下面的录音，回答第 6 至 8 题。</div>
+                            </div>
+                            {% for k,v in range(5,7) %}
+                                {% set question =  info.testPaperJson.output.listening[v] %}
+                                <div class="form-group">
+                                    <div class="col-sm-12 question" data-answer="{{ question['answer'] }}">
+                                        <label class="strong">{{ question['q_no'] }}. </label>&nbsp;&nbsp;{{ question['question'] }}
+                                        <button type="button" class="btn btn-primary btn-xs listening-btn show-select-answer" data-status="0">显示答案</button>
+                                    </div>
+                                    {% for k1,v1 in question['options'] %}
+                                        <div class="col-sm-12 option {{ v1['letter'] }}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="strong">{{ v1['letter'] }}</label>. {{ v1['text'] }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <div class="col-sm-12"><br>听下面的录音，回答第 9 至 11 题。</div>
+                            </div>
+                            {% for k,v in range(8,10) %}
+                                {% set question =  info.testPaperJson.output.listening[v] %}
+                                <div class="form-group">
+                                    <div class="col-sm-12 question" data-answer="{{ question['answer'] }}">
+                                        <label class="strong">{{ question['q_no'] }}. </label>&nbsp;&nbsp;{{ question['question'] }}
+                                        <button type="button" class="btn btn-primary btn-xs listening-btn show-select-answer" data-status="0">显示答案</button>
+                                    </div>
+                                    {% for k1,v1 in question['options'] %}
+                                        <div class="col-sm-12 option {{ v1['letter'] }}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="strong">{{ v1['letter'] }}</label>. {{ v1['text'] }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <div class="col-sm-12"><br>听下面的录音，回答第 12 至 14 题。</div>
+                            </div>
+                            {% for k,v in range(11,13) %}
+                                {% set question =  info.testPaperJson.output.listening[v] %}
+                                <div class="form-group">
+                                    <div class="col-sm-12 question" data-answer="{{ question['answer'] }}">
+                                        <label class="strong">{{ question['q_no'] }}. </label>&nbsp;&nbsp;{{ question['question'] }}
+                                        <button type="button" class="btn btn-primary btn-xs listening-btn show-select-answer" data-status="0">显示答案</button>
+                                    </div>
+                                    {% for k1,v1 in question['options'] %}
+                                        <div class="col-sm-12 option {{ v1['letter'] }}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="strong">{{ v1['letter'] }}</label>. {{ v1['text'] }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <div class="col-sm-12"><br>听下面的录音，回答第 15 至 17 题。</div>
+                            </div>
+                            {% for k,v in range(14,16) %}
+                                {% set question =  info.testPaperJson.output.listening[v] %}
+                                <div class="form-group">
+                                    <div class="col-sm-12 question" data-answer="{{ question['answer'] }}">
+                                        <label class="strong">{{ question['q_no'] }}. </label>&nbsp;&nbsp;{{ question['question'] }}
+                                        <button type="button" class="btn btn-primary btn-xs listening-btn show-select-answer" data-status="0">显示答案</button>
+                                    </div>
+                                    {% for k1,v1 in question['options'] %}
+                                        <div class="col-sm-12 option {{ v1['letter'] }}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="strong">{{ v1['letter'] }}</label>. {{ v1['text'] }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <div class="col-sm-12"><br>听下面的录音，回答第 18 至 20 题。</div>
+                            </div>
+                            {% for k,v in range(17,19) %}
+                                {% set question =  info.testPaperJson.output.listening[v] %}
+                                <div class="form-group">
+                                    <div class="col-sm-12 question" data-answer="{{ question['answer'] }}">
+                                        <label class="strong">{{ question['q_no'] }}. </label>&nbsp;&nbsp;{{ question['question'] }}
+                                        <button type="button" class="btn btn-primary btn-xs listening-btn show-select-answer" data-status="0">显示答案</button>
+                                    </div>
+                                    {% for k1,v1 in question['options'] %}
+                                        <div class="col-sm-12 option {{ v1['letter'] }}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="strong">{{ v1['letter'] }}</label>. {{ v1['text'] }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <h3 class="col-sm-12 strong">
+                                    第二部分 阅读理解（共 20 小题：每小题 2.5 分，满分 50 分）
+                                    <button type="button" class="btn btn-primary btn-xs show-answer-all" data-type="reading" data-status="0">显示答案</button>、
+                                </h3>
+                                <div class="col-sm-12">阅读下列短文，从每题所给的 A、B、C、D 四个选项中选出最佳选项。</div>
+                            </div>
+                            {% for k,article in info.testPaperJson.output.reading %}
+                                <div class="form-group">
+                                    <div class="col-sm-12 strong">第{{ article['part'] }}段</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">{{ article['content'] }}</div>
+                                </div>
+                                {% for k1,question in article['questions'] %}
+                                    <div class="form-group">
+                                        <div class="col-sm-12 question" data-answer="{{ question['answer'] }}">
+                                            <label class="strong">{{ question['q_no'] }}. </label>&nbsp;&nbsp;{{ question['question'] }}
+                                            <button type="button" class="btn btn-primary btn-xs reading-btn show-select-answer" data-status="0">显示答案</button>
+                                        </div>
+                                        {% for k1,v1 in question['options'] %}
+                                            <div class="col-sm-12 option {{ v1['letter'] }}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="strong">{{ v1['letter'] }}</label>. {{ v1['text'] }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            <div class="form-group">
+                                <h3 class="col-sm-12 strong">
+                                    第三部分 语言运用（共两节，满分 30 分）
+                                    <button type="button" class="btn btn-primary btn-xs show-answer-all" data-type="language" data-status="0">显示答案</button>、
+                                </h3>
+                            </div>
+                            {% set article = info.testPaperJson.output.language_usage[0] %}
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <strong>第{{ article.part }}节</strong>（共 10 小题：每小题 1.5 分，满分 15 分）
+                                    <button type="button" class="btn btn-primary btn-xs language-btn show-language-answer-1" data-status="0">显示答案</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">阅读下面短文，从每题所给的 A、B、C、D 四个选项中选出最佳选项。</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">{{ article['content'] }}</div>
+                            </div>
+                            {% for k1,v1 in article['option_list'] %}
+                                <div class="form-group language-option-box">
+                                    <div class="col-sm-1 question" data-answer="{{ v1['answer'] }}"><label class="strong">{{ k1 + 1 }}. </label></div>
+                                    {% for k2,option in v1['options'] %}
+                                        <div class="col-sm-2 option {{ option['letter'] }}" ><label class="strong">{{ option['letter'] }}</label>. {{ option['text'] }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            {% set article = info.testPaperJson.output.language_usage[1] %}
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <strong>第{{ article.part }}节</strong>（共 10 小题：每小题 1.5 分，满分 15 分）
+                                    <button type="button" class="btn btn-primary btn-xs language-btn show-language-answer-2" data-status="0">显示答案</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">阅读下面短文，在空白处填入适当的助词或括号内单词的正确形式，括号内单词有双下划线时，写出该单词的汉字或假名。</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12" id="reading-content">{{ setAnswers(article['content'], article['answers'])|raw }}</div>
+                            </div>
+                            <div class="form-group">
+                                <h3 class="col-sm-12 strong">
+                                    第四部分 写作（共两节，满分 40 分）
+                                    <button type="button" class="btn btn-primary btn-xs show-answer-all" data-type="write" data-status="0">显示答案</button>、
+                                </h3>
+                            </div>
+                            {% for k,write in info.testPaperJson.output.writing %}
+                                {% set content = set_array_column(write['contents'], "content", "type") %}
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <strong>第{{ write.part }}节</strong>（满分 10 分）
+                                        <button type="button" class="btn btn-primary btn-xs write-btn show-write-answer" data-index="{{ k }}" data-status="0">显示答案</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">{{ content.desc }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">{{ content.requires }}</div>
+                                </div>
+                                {% if content.reference_words is defined %}
+                                    <div class="form-group">
+                                        <div class="col-sm-12">{{ content.reference_words|replace({'\n':""}) }}</div>
+                                    </div>
+                                {% endif %}
+                                {% if content.points is defined %}
+                                    <div class="form-group">
+                                        <div class="col-sm-12">{{ content.points|replace({'\n':""}) }}</div>
+                                    </div>
+                                {% endif %}
+                                <div class="form-group hidden write-answer-{{ k }}">
+                                    <div class="col-sm-12 text-success">{{ write.answer|replace({'\n':""}) }}</div>
+                                </div>
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function(){
+            $('.show-select-answer').click(function () {
+                let status = $(this).data('status');
+                let answer = $(this).parent().data('answer');
+                let option = $(this).parent().siblings('.' + answer);
+                if(status == "0"){
+                    option.addClass('text-success');
+                    $(this).text('隐藏答案');
+                }else{
+                    option.removeClass('text-success');
+                    $(this).text('显示答案');
+                }
+                $(this).data('status', 1 - status);
+            });
+            $('.show-language-answer-1').click(function(){
+                let status = $(this).data('status');
+                $('.language-option-box').each(function(){
+                    let answer = $(this).find('.question').data('answer');
+                    let option = $(this).find('.' + answer);
+                    if(status == 0){
+                        option.addClass('text-success');
+                    }else{
+                        option.removeClass('text-success');
+                    }
+                });
+                $(this).data('status', 1 - status);
+                if(status == 0){
+                    $(this).text('隐藏答案');
+                }else{
+                    $(this).text('显示答案');
+                }
+            });
+            $('.show-language-answer-2').click(function(){
+                let status = $(this).data('status');
+                let question = $('#reading-content').find('.question');
+                let answer = $('#reading-content').find('.answer');
+                if(status == 0){
+                    question.hide();
+                    answer.show().removeClass('hidden');
+                    $(this).text('隐藏答案');
+                }else{
+                    question.show();
+                    answer.hide().addClass('hidden');
+                    $(this).text('显示答案');
+                }
+                $(this).data('status', 1 - status);
+            });
+            $('.show-write-answer').click(function(){
+                let index = $(this).data('index')
+                let status = $(this).data('status');
+                let answer = $('.write-answer-' + index);
+                if(status == 0){
+                    answer.removeClass('hidden');
+                    $(this).text('隐藏答案');
+                }else{
+                    answer.addClass('hidden');
+                    $(this).text('显示答案');
+                }
+                $(this).data('status', 1 - status);
+            });
+            $('.show-answer-all').click(function(){
+                let type = $(this).data('type');
+                let status = $(this).data('status');
+                if(status == 0){
+                    $(this).text('隐藏答案');
+                }else{
+                    $(this).text('显示答案');
+                }
+                $(this).data('status', 1 - status);
+                $('.' + type + '-btn').click();
+            });
+            $('.show-answer').click(function(){
+                let status = $(this).data('status');
+                if(status == 0){
+                    $(this).text('隐藏答案');
+                }else{
+                    $(this).text('显示答案');
+                }
+                $(this).data('status', 1 - status);
+                $('.show-answer-all').click();
+            });
+        });
+    </script>
+{% endblock %}

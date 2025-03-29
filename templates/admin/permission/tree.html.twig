@@ -1,0 +1,93 @@
+<link href="{{ asset('assets/plugins/jstree/themes/default/style.css') }}" rel="stylesheet">
+
+{% macro recursivePermission(node,permissionId) %}
+    {% import _self as self %}
+    {% if node.children|length %}
+        <li data-jstree='{"opened":true{% if node.id in permissionId %}, "selected":true{% endif %} }' data-id="{{ node.id }}">
+            {{ node.routeName|raw }}（{{ node.route }})
+            <ul>
+                {% for child in node.children %}
+                    {{ self.recursivePermission(child,permissionId) }}
+                {% endfor %}
+            </ul>
+        </li>
+    {% else %}
+        <li data-jstree='{"type":"file"{% if node.id in permissionId %}, "selected":true{% endif %} }' data-id="{{ node.id }}">
+            {{ node.routeName|raw }}（{{ node.route }}）
+        </li>
+    {% endif %}
+{% endmacro %}
+
+{% from _self import recursivePermission %}
+
+<div id="{% if type == 'checkbox' %}checkTree{% else %}basicTree{% endif %}">
+    <ul>
+        {% for node in tree %}
+            {{ recursivePermission(node,permissionId) }}
+        {% endfor %}
+    </ul>
+</div>
+
+<script src="{{ asset('assets/plugins/jstree/jstree.min.js') }}"></script>
+<script src="{{ asset('assets/js/pages/ui-tree-view.js') }}"></script>
+<script>
+    $(function(){
+        $('.jstree-anchor').on('click',function(){
+            let _self = $(this);
+            setTimeout(function(){
+                let isCheck = _self.hasClass('jstree-clicked');
+                let next = _self.next();
+                if(next.length > 0){
+                    next.find('a').each(function(){
+                        if(isCheck && !$(this).hasClass('jstree-clicked')){
+                            clicked($(this));
+                        }
+                        if(!isCheck && $(this).hasClass('jstree-clicked')){
+                            unclicked($(this));
+                        }
+                    });
+                }
+
+                function clicked(obj){
+                    obj.addClass('jstree-clicked');
+                    obj.parent().attr('aria-selected',true);
+                    let data = obj.parent().data('jstree');
+                    if(typeof data.type !== 'undefined'){
+                        data.selected = true;
+                        obj.parent().attr('data-jstree', data);
+                    }
+                }
+
+                function unclicked(obj){
+                    obj.removeClass('jstree-clicked');
+                    obj.parent().attr('aria-selected',false);
+                    let data = obj.parent().data('jstree');
+                    if(typeof data.type !== 'undefined'){
+                        delete data.selected;
+                        obj.parent().attr('data-jstree', data);
+                    }
+                }
+
+                function checkParents(dom,isCheck){
+                    let sib = dom.parent().siblings();
+                    let bl = Array.prototype.every.call(sib, function(v){
+                        return $(v).find('a').hasClass('jstree-clicked') === isCheck;
+                    });
+                    if(bl){
+                        let parent = dom.parent().parent().prev();
+                        if(parent.attr('id') !== 'checkTree'){
+                            if(isCheck && !parent.hasClass('jstree-clicked')){
+                                clicked(parent);
+                            }
+                            if(!isCheck && parent.hasClass('jstree-clicked')){
+                                unclicked(parent);
+                            }
+                            checkParents(parent, isCheck);
+                        }
+                    }
+                }
+                checkParents(_self, isCheck);
+            },100);
+        });
+    })
+</script>

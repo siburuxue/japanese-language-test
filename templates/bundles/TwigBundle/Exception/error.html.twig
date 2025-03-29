@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+        <!-- Title -->
+        <title>{{ constant('App\\Lib\\Constant\\Tool::PROJECT_NAME') }}</title>
+
+        <!-- Styles -->
+        <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/plugins/icomoon/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/plugins/uniform/css/default.css') }}" rel="stylesheet"/>
+        <link href="{{ asset('assets/plugins/switchery/switchery.min.css') }}" rel="stylesheet"/>
+
+        <!-- Theme Styles -->
+        <link href="{{ asset('assets/css/ecaps.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+    </head>
+    <body class="error-page">
+        <!-- Page Content -->
+        <div class="page-container page-error">
+        <div class="page-content">
+            <!-- Page Inner -->
+            <div class="page-inner">
+                <div id="main-wrapper" class="container">
+                    <div class="row">
+                        <div class="col-md-6 center">
+                            <h1 class="error-page-logo">{{ status_code }}</h1>
+                            <p class="error-page-top-text">Oops... Something went wrong...</p>
+                            <p class="error-page-bottom-text">{{ status_text|raw }}</p>
+                            <a href="{{ path(constant_route('HOME')) }}" class="btn btn-default m-b-xxs">Return Home</a>
+                        </div>
+                    </div><!-- Row -->
+                </div><!-- Main Wrapper -->
+            </div><!-- /Page Inner -->
+        </div><!-- /Page Content -->
+        </div>
+        <script src="{{ asset('assets/plugins/jquery/jquery-3.1.0.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/uniform/js/jquery.uniform.standalone.js') }}"></script>
+        <script src="{{ asset('assets/plugins/switchery/switchery.min.js') }}"></script>
+        <script src="{{ asset('assets/js/ecaps.min.js') }}"></script>
+    </body>
+</html>

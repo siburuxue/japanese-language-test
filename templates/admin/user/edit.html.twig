@@ -1,0 +1,139 @@
+{% extends './admin/base/base.html.twig' %}
+
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            编辑用户
+            {% if hasPermission('USER_INDEX') %}
+            <a href="{{ path(constant_route('USER_INDEX')) }}" class="btn btn-primary"><i class="fa fa-undo"></i>返回</a>
+            {% endif %}
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label">用户名：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="{{ info.info.username }}" id="username">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="nickname" class="col-sm-2 control-label">昵称：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="{{ info.info.nickname }}" id="nickname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-sm-2 control-label">密码：</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" value="" id="password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-group" class="col-sm-2 control-label">用户组：</label>
+                                <div class="col-sm-10">
+                                    <select id="user-group" class="form-control">
+                                        <option value="0">请选择...</option>
+                                        {% for group in groupList %}
+                                            <option value="{{ group.id }}" {% if group.id in info.groupIdList %}selected{% endif %}>{{ group.groupName }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="role" class="col-sm-2 control-label">规则：</label>
+                                <div class="col-sm-10">
+                                    <select id="role" class="form-control" multiple style="height:300px">
+                                        <option value="">请选择...</option>
+                                        {% for role in roleList %}
+                                            <option value="{{ role.id }}" {% if role.id in info.roleIdList %}selected{% endif %}>{{ role.roleName }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-Default" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="reset" id="clear" class="btn btn-default"><i class="fa fa-undo"></i> 重置</button>
+                                    {% if hasPermission('USER_UPDATE') %}
+                                    <button type="button" class="btn btn-primary" id="save"><i class="fa fa-save"></i> 保存</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel-body" id="permission-tree" data-load-url=""></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            loadPermission();
+            $('#clear').click(function(){
+                loadPermission();
+            });
+            $('#role').change(loadPermission);
+            $('#user-group').change(function(){
+                let groupId = $(this).val();
+                Tools.ajax({
+                    url:Routing.generate('{{ constant_route('GET_ROLE_ID') }}',{id: groupId}),
+                    success:function(res){
+                        $('#role').val(-1);
+                        $('#role option').each(function(){
+                            if(res.data.includes($(this).val()) || res.data.includes(parseInt($(this).val()))){
+                                $(this).prop('selected', true);
+                            }
+                        });
+                        loadPermission();
+                    }
+                });
+            });
+            $('#save').click(function () {
+                let id = '{{ info.info.id }}';
+                let roleId = $('#role').val();
+                let username = $('#username').val().trim();
+                let nickname = $('#nickname').val().trim();
+                let password = $('#password').val();
+                let groupId = $('#user-group').val();
+                if(username === ""){
+                    layer.msg("请输入用户名",{timeout:1500},function(){
+                        $('#username').focus();
+                    });
+                    return false;
+                }
+                if(nickname === ""){
+                    layer.msg("请输入昵称",{timeout:1500},function(){
+                        $('#nickname').focus();
+                    });
+                    return false;
+                }
+                if(groupId === ""){
+                    layer.msg("请选择用户组",{timeout:1500},function(){
+                        $('#user-group').focus();
+                    });
+                    return false;
+                }
+                Tools.ajax({
+                    url:"{{ path(constant_route('USER_UPDATE')) }}",
+                    data:{id, username, nickname, roleId, groupId, password},
+                    success:function(res){
+                        layer.msg(res.msg,{time:1500},function(){
+                            if(res.status){
+                                window.location.href = '{{ path(constant_route('USER_INDEX')) }}';
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

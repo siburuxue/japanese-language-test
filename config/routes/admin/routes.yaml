@@ -1,0 +1,176 @@
+admin-test:
+  path: /test/index
+  controller: App\Controller\TestController::index
+login-index:
+  path: /login/index
+  controller: App\Controller\LoginController::index
+login-submit:
+  path: /login/submit
+  controller: App\Controller\LoginController::submit
+log-out:
+  path: /login/logOut
+  controller: App\Controller\LoginController::logOut
+home:
+  path: /
+  controller: App\Controller\IndexController::index
+menu-tree:
+  path: /menu/tree
+  controller: App\Controller\MenuController::tree
+oss-sts-token-refresh:
+  path: /oss/sts/token/refresh
+  controller: App\Controller\OssController::stsTokenRefresh
+get-readme:
+  path: /readme
+  controller: App\Controller\IndexController::getReadme
+menu-focus:
+  path: /menu/focus
+  controller: App\Controller\MenuController::focus
+# 设置部分
+
+# 权限部分
+permission-index:
+  path: /permission/index
+  controller: App\Controller\PermissionController::index
+permission-tree:
+  path: /permission/tree/{type}/{role}
+  controller: App\Controller\PermissionController::tree
+  defaults:
+    type: 'null'
+    role: -1
+# 权限部分
+
+# 规则部分
+role-index:
+  path: /role/index
+  controller: App\Controller\RoleController::index
+role-list:
+  path: /role/list
+  controller: App\Controller\RoleController::list
+role-add:
+  path: /role/add
+  controller: App\Controller\RoleController::add
+role-insert:
+  path: /role/insert
+  controller: App\Controller\RoleController::insert
+role-edit:
+  path: /role/edit/{id}
+  controller: App\Controller\RoleController::edit
+  requirements:
+    id: '\d+'
+role-update:
+  path: /role/update
+  controller: App\Controller\RoleController::update
+role-delete:
+  path: /role/delete/{id}
+  controller: App\Controller\RoleController::delete
+  requirements:
+    id: '\d+'
+# 规则部分
+# 用户组部分
+user-group-index:
+  path: /user-group/index
+  controller: App\Controller\UserGroupController::index
+user-group-list:
+  path: /user-group/list
+  controller: App\Controller\UserGroupController::list
+user-group-add:
+  path: /user-group/add
+  controller: App\Controller\UserGroupController::add
+user-group-insert:
+  path: /user-group/insert
+  controller: App\Controller\UserGroupController::insert
+user-group-edit:
+  path: /user-group/edit/{id}
+  controller: App\Controller\UserGroupController::edit
+  requirements:
+    id: '\d+'
+user-group-update:
+  path: /user-group/update
+  controller: App\Controller\UserGroupController::update
+user-group-delete:
+  path: /user-group/delete/{id}
+  controller: App\Controller\UserGroupController::delete
+  requirements:
+    id: '\d+'
+user-group-info:
+  path: /user-group/info/{id}
+  controller: App\Controller\UserGroupController::info
+  requirements:
+    id: '\d+'
+get-role-id:
+  path: /user-group/getRoleId/{id}
+  controller: App\Controller\UserGroupController::getRoleId
+  requirements:
+    id: '\d+'
+# 用户组部分
+# 用户部分
+user-index:
+  path: /user/index
+  controller: App\Controller\UserController::index
+user-list:
+  path: /user/list
+  controller: App\Controller\UserController::list
+user-add:
+  path: /user/add
+  controller: App\Controller\UserController::add
+user-insert:
+  path: /user/insert
+  controller: App\Controller\UserController::insert
+user-edit:
+  path: /user/edit/{id}
+  controller: App\Controller\UserController::edit
+  requirements:
+    id: '\d+'
+user-update:
+  path: /user/update
+  controller: App\Controller\UserController::update
+user-delete:
+  path: /user/delete/{id}
+  controller: App\Controller\UserController::delete
+  requirements:
+    id: '\d+'
+# 用户部分
+
+# 系统日志
+log-index:
+  path: /log/index
+  controller: App\Controller\LogController::index
+log-list:
+  path: /log/list
+  controller: App\Controller\LogController::list
+# 系统日志
+# 字典部分
+dict-index:
+  path: /dict/index
+  controller: App\Controller\DictController::index
+dict-list:
+  path: /dict/list
+  controller: App\Controller\DictController::list
+# 字典部分
+# 设置部分
+
+test-paper:
+  path: /test/paper
+  controller: App\Controller\TestPaperController::index
+test-paper-list:
+  path: /test/paper/list
+  controller: App\Controller\TestPaperController::list
+
+test-paper-insert:
+  path: /test/paper/insert
+  controller: App\Controller\TestPaperController::insert
+test-paper-delete:
+  path: /test/paper/delete
+  controller: App\Controller\TestPaperController::delete
+test-paper-set-difficulty:
+  path: /test/paper/setDifficulty
+  controller: App\Controller\TestPaperController::setDifficulty
+test-paper-upload-listening-recording:
+  path: /test/paper/uploadListeningRecording
+  controller: App\Controller\TestPaperController::uploadListeningRecording
+test-paper-delete-listening-recording:
+  path: /test/paper/deleteListeningRecording
+  controller: App\Controller\TestPaperController::deleteListeningRecording
+test-paper-info:
+  path: /test/paper/info
+  controller: App\Controller\TestPaperController::info

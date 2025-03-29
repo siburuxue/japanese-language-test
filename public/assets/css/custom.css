@@ -1,0 +1,37 @@
+/* Write your custom CSS here */
+.cell-right {
+    text-align: right;
+}
+
+.cell-center {
+    text-align: center;
+}
+
+#user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background: #00F7DE;
+    margin-top: -10px;
+    display: none;
+    vertical-align: top;
+    text-align: center;
+    line-height: 36px;
+    font-size: 25px;
+    font-weight:bolder;
+}
+
+.cycle-30{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+}
+
+.margin-left-33{
+    margin-left: 33px;
+}
+
+.no-data{
+    text-align: center;
+    color: grey;
+}

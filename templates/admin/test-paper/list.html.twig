@@ -1,0 +1,47 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>用户名称</th>
+        <th>试卷名称</th>
+        <th>添加时间</th>
+        <th>难度</th>
+        <th>答题人数</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for paper in pagination %}
+        <tr>
+            <th scope="row">{{ paper.id }}</th>
+            <td>{{ getPaperCreator(paper.id) }}</td>
+            <td>{{ paper.title }}</td>
+            <td>{{ paper.createTime|date('Y/m/d') }}</td>
+            <td>{{ paper.difficulty|dict(difficulty) }}</td>
+            <td>{{ paper.id }}</td>
+            <td>
+                {% if hasPermission('TEST_PAPER_DELETE') %}
+                    <button type="button" class="btn btn-danger btn-xs table-confirm-change-status" data-url="{{ path(constant_route('TEST_PAPER_DELETE'), {'id' : paper.id}) }}"><i class="fa fa-trash"></i> 删除</button>
+                {% endif %}
+                {% if hasPermission('TEST_PAPER_SET_DIFFICULTY') %}
+                    <button type="button" class="btn btn-primary btn-xs difficulty" data-id="{{ paper.id }}" data-difficulty="{{ paper.difficulty }}"><i class="fa fa-star-half-o"></i> 标记难度</button>
+                {% endif %}
+
+                {% if paper.listeningRecording %}
+                    {% if hasPermission('TEST_PAPER_UPLOAD_LISTENING_RECORDING') %}
+                        <button type="button" class="btn btn-danger btn-xs table-confirm-change-status" data-url="{{ path(constant_route('TEST_PAPER_DELETE_LISTENING_RECORDING'), {'id' : paper.id}) }}"><i class="fa fa-trash"></i> 删除听力音频</button>
+                    {% endif %}
+                {% else %}
+                    {% if hasPermission('TEST_PAPER_UPLOAD_LISTENING_RECORDING') %}
+                        <button type="button" class="btn btn-primary btn-xs listening" data-id="{{ paper.id }}"><i class="fa fa-cloud-upload"></i> 上传听力音频</button>
+                    {% endif %}
+                {% endif %}
+                {% if hasPermission('TEST_PAPER_INFO') %}
+                    <a class="btn btn-primary btn-xs info" href="{{ path(constant_route('TEST_PAPER_INFO'), {'id' : paper.id}) }}"><i class="fa fa-search"></i> 试卷详情</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ knp_pagination_render(pagination) }}

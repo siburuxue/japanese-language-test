@@ -1,0 +1,144 @@
+{% extends './admin/base/base.html.twig' %}
+{% block css %}
+    <style type="text/css">
+        .statistics {
+            min-width: 310px;
+            max-width: 800px;
+            margin: 0 auto
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 cell-center"><h3 style="margin-top: -10px;color:grey">Environment</h3></div>
+            <div class="col-lg-4 col-md-6" style="max-height:570px;overflow-y:scroll">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">PHP</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="project-stats">
+                            <ul class="list-unstyled">
+                                <li><span class="text-danger">php-info</span></li>
+                                {% for item in php.base %}
+                                    <li>
+                                        {% if item.href is empty %}
+                                            {{ item.name }}
+                                        {% else %}
+                                            <a href="{{ item.href }}" target="_blank"
+                                               class="text-primary">{{ item.name }}</a>
+                                        {% endif %}
+                                        <span class="label label-success pull-right">{{ item.val }}</span>
+                                    </li>
+                                {% endfor %}
+                                <li><span class="text-danger">php-ext</span></li>
+                                {% for key,val in php.ext %}
+                                    <li>
+                                        <a href="https://pecl.php.net/package/{{ key }}" target="_blank"
+                                           class="text-primary">{{ key }}</a><span
+                                                class="label label-success pull-right">{{ val }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" style="max-height:570px;overflow-y:scroll">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Composer</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="project-stats">
+                            <ul class="list-unstyled" data-root="vendor">
+                                {% for item in composer %}
+                                    <li><a href="javascript:;" class="text-primary readme">{{ item.name }}</a><span
+                                                class="label label-success pull-right">{{ item.version }}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" style="max-height:570px;overflow-y:scroll">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Package</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="project-stats">
+                            <ul class="list-unstyled" data-root="node_modules">
+                                {% for item in package %}
+                                    <li><a href="javascript:;" class="text-primary readme">{{ item.name }}</a><span
+                                                class="label label-success pull-right">{{ item.version }}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <button type="button" data-toggle="modal" id="view" data-target="#myModal" class="btn btn-primary"
+            style="display: none"><i class="fa fa-search"></i> 查看
+    </button>
+    <div class="modal fade bs-example-modal-lg in" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-title"></h4>
+                </div>
+                <div class="modal-body" id="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{{ asset('assets/js/data/sunburst.js') }}"></script>
+    <script type="text/javascript">
+        $(() => {
+            $('.readme').click(function () {
+                let dir = $(this).text();
+                let root = $(this).parents('ul').data('root');
+                Tools.ajax({
+                    url: "{{ path(constant_route('GET_README')) }}",
+                    data: {root, dir},
+                    dataType: 'text',
+                    success: (res) => {
+                        $('#modal-body').html(function () {
+                            return markdownit({
+                                html: true,
+                                linkify: true,
+                                typographer: true,
+                            }).render(res) + "<br>";
+                        });
+                        $('#modal-body img').each(function (k, v) {
+                            $(v).css('visibility', 'hidden');
+                        })
+                        $('#modal-title').text(dir);
+                        $('#view').click();
+                        setTimeout(function () {
+                            let width = $('#modal-body').width();
+                            $('#modal-body img').each(function (k, v) {
+                                if ($(this).width() > width) {
+                                    $(v).css('width', '100%');
+                                }
+                                $(v).css('visibility', 'visible');
+                            })
+                        }, 300);
+                    }
+                })
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends './admin/base/base.html.twig' %}
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            用户组列表
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+
+                                <label for="input-Default" class="col-sm-1 control-label">用户组名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="group-name">
+                                </div>
+                                <label for="input-Default" class="col-sm-1 control-label">规则名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="role-name">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0">
+                                <div class="col-sm-12 control-label">
+                                    <button type="reset" class="btn btn-default" id="clear"><i class="fa fa-undo"></i> 清空</button>
+                                    {% if hasPermission('USER_GROUP_LIST') %}
+                                    <button type="button" class="btn btn-primary" id="search"><i class="fa fa-search"></i> 查询</button>
+                                    {% endif %}
+                                    {% if hasPermission('USER_GROUP_ADD') %}
+                                    <a href="{{ path(constant_route('USER_GROUP_ADD')) }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        {% if hasPermission('USER_GROUP_LIST') %}
+                        <div id="user-group-list" class="dataTables_wrapper table-box" data-auto-load="true" data-load-url="{{ path(constant_route('USER_GROUP_LIST')) }}" data-param="{}"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function (){
+            $('#search').click(function(){
+                let groupName = $('#group-name').val();
+                let roleName = $('#role-name').val();
+                $('#user-group-list').data('param', {groupName, roleName}).loadData();
+            });
+        });
+    </script>
+{% endblock %}

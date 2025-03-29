@@ -1,0 +1,87 @@
+{% extends './admin/base/base.html.twig' %}
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            系统操作日志
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="uid" class="col-sm-1 control-label">用户ID</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="uid">
+                                </div>
+                                <label for="username" class="col-sm-1 control-label">用户名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="username">
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="content" class="col-sm-1 control-label">操作</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="content">
+                                </div>
+                                <label for="start" class="col-sm-1 control-label">操作时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" id="start">
+                                </div>
+                                <div class="col-sm-1 cell-center"><label for="end" class="control-label">~</label></div>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" id="end">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0">
+                                <div class="col-sm-6 control-label"></div>
+                                <div class="col-sm-6 control-label">
+                                    <button type="reset" class="btn btn-default" id="clear"><i class="fa fa-undo"></i> 清空</button>
+                                    {% if hasPermission('LOG_LIST') %}
+                                        <button type="button" class="btn btn-primary" id="search"><i class="fa fa-search"></i> 查询</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        {% if hasPermission('LOG_LIST') %}
+                        <div id="log-list" class="dataTables_wrapper table-box" data-auto-load="true" data-load-url="{{ path(constant_route('LOG_LIST')) }}" data-param="{}"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function (){
+            laydate.render({
+                elem:'#start',
+                type:'datetime'
+            });
+            laydate.render({
+                elem:'#end',
+                type:'datetime'
+            });
+            $('#search').click(function(){
+                let uid = $('#uid').val().trim();
+                let username = $('#username').val().trim();
+                let content = $('#content').val().trim();
+                let start = $('#start').val();
+                let end = $('#end').val();
+                $('#log-list').data('param', {uid, username, content, start, end}).loadData();
+            });
+        });
+    </script>
+{% endblock %}

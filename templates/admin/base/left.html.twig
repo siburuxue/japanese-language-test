@@ -1,0 +1,85 @@
+<div class="page-sidebar">
+    <a class="logo-box" href="{{ path(constant_route('HOME')) }}">
+        <span>{{ constant('App\\Lib\\Constant\\Tool::PROJECT_NAME') }}</span>
+    </a>
+    <div class="page-sidebar-inner">
+        <div class="page-sidebar-menu" data-auto-load="false" data-load-url="{{ path(constant_route('MENU_TREE')) }}">
+            <ul class="accordion-menu">
+                {% if hasPermission('HOME') %}
+                <li>
+                    <a href="{{ path('home') }}"><i class="menu-icon icon-home4"></i><span>Dashboard</span></a>
+                </li>
+                {% endif %}
+
+                {% if anyPermissionList(['PERMISSION_INDEX','ROLE_INDEX','USER_GROUP_INDEX','USER_INDEX','DICT_INDEX','LOG_INDEX'])%}
+                <li>
+                    <a href="#">
+                        <i class="menu-icon fa fa-wrench"></i><span>设置</span><i class="accordion-icon fa fa-angle-left"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        {% if hasPermission('PERMISSION_INDEX') %}
+                        <li><a href="{{ path('permission-index') }}">权限列表</a></li>
+                        {% endif %}
+                        {% if hasPermission('ROLE_INDEX') %}
+                        <li><a href="{{ path('role-index') }}">规则列表</a></li>
+                        {% endif %}
+                        {% if hasPermission('USER_GROUP_INDEX') %}
+                        <li><a href="{{ path('user-group-index') }}">用户组列表</a></li>
+                        {% endif %}
+                        {% if hasPermission('USER_INDEX') %}
+                        <li><a href="{{ path('user-index') }}">用户列表</a></li>
+                        {% endif %}
+                        {% if hasPermission('DICT_INDEX') %}
+                        <li><a href="{{ path('dict-index') }}">字典列表</a></li>
+                        {% endif %}
+                        {% if hasPermission('LOG_INDEX') %}
+                        <li><a href="{{ path('log-index') }}">系统日志</a></li>
+                        {% endif %}
+
+                    </ul>
+                </li>
+                {% endif %}
+                {% if anyPermissionList(['TEST_PAPER'])%}
+                <li>
+                    <a href="#">
+                        <i class="menu-icon fa fa-file-text-o"></i><span>题目管理</span><i class="accordion-icon fa fa-angle-left"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        {% if hasPermission('TEST_PAPER') %}
+                        <li><a href="{{ path('test-paper') }}">题库管理</a></li>
+                        {% endif %}
+
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(function (){
+        let focus = window.location.pathname;
+        Tools.ajax({
+            url: '{{ path(constant_route("MENU_FOCUS")) }}',
+            data: {focus},
+            async: false,
+            success: function (res) {
+                focus = res.focus;
+            }
+        });
+        if(focus === ""){
+            focus = '{{ path(constant_route('HOME')) }}';
+        }
+        setTimeout(function () {
+            let activeMenu = $('.accordion-menu a[href="' + focus + '"]');
+            let subMenu = activeMenu.parent().parent();
+            if(!subMenu.hasClass('accordion-menu')){
+                activeMenu.addClass('active');
+                subMenu.show().find('> li').addClass('animation');
+                subMenu.parent().addClass("active-page").addClass("open");
+            }else{
+                activeMenu.parent().addClass('active-page');
+            }
+        }, 100)
+    });
+</script>

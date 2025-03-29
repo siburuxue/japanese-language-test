@@ -1,0 +1,52 @@
+{
+    "table": {
+        "type": "类型",
+        "d_key": "键",
+        "d_value": "值",
+        "d_key1": "键1",
+        "d_key2": "键2",
+        "d_key3": "键3",
+        "d_key4": "键4",
+        "u_key": "唯一标识",
+        "remark": "备注"
+    },
+    "columnText": {
+        "type": "类型",
+        "d_key": "键",
+        "d_key1": "键1",
+        "d_key2": "键2",
+        "d_key3": "键3",
+        "d_key4": "键4",
+        "d_value": "值",
+        "u_key": "唯一标识",
+        "remark": "备注"
+    },
+    "type": {
+        "d_key1": {
+            "source": "dict",
+            "type": "course_type",
+            "element": "radio"
+        },
+        "d_key2": {
+            "source": "dict",
+            "type": "course_type",
+            "element": "checkbox"
+        },
+        "d_key3": {
+            "source": "dict",
+            "type": "course_type",
+            "element": "checkbox"
+        },
+        "d_key4": {
+            "source": "dict",
+            "type": "course_type",
+            "element": "select",
+            "option": "multiple"
+        },
+        "d_key": {
+            "source": "dict",
+            "type": "course_type",
+            "element": "select"
+        }
+    }
+}

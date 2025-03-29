@@ -1,0 +1,65 @@
+{% extends './admin/base/base.html.twig' %}
+{% block content %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">
+            字典列表
+        </h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="input-Default" class="col-sm-1 control-label">类型</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="type">
+                                </div>
+                                <label for="input-Default" class="col-sm-1 control-label">字典 key</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="dKey">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0">
+                                <label for="input-Default" class="col-sm-1 control-label">字典 value</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="dValue">
+                                </div>
+                                <div class="col-sm-6 control-label">
+                                    <button type="reset" class="btn btn-default" id="clear"><i class="fa fa-undo"></i> 清空</button>
+                                    {% if hasPermission('DICT_LIST') %}
+                                        <button type="button" class="btn btn-primary" id="search"><i class="fa fa-search"></i> 查询</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        {% if hasPermission('DICT_LIST') %}
+                            <div id="dict-list" class="dataTables_wrapper table-box" data-auto-load="true" data-load-url="{{ path(constant_route('DICT_LIST')) }}" data-param="{}"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(function (){
+            $('#search').click(function(){
+                let type = $('#type').val();
+                let dKey = $('#dKey').val();
+                let dValue = $('#dValue').val();
+                $('#dict-list').data('param',{type, dKey, dValue}).loadData();
+            });
+        });
+    </script>
+{% endblock %}

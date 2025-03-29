@@ -1,0 +1,57 @@
+{% if pageCount >= 1 %}
+    <div class="dataTables_paginate paging_simple_numbers">
+        共 {{ totalCount }} 条&nbsp;&nbsp;&nbsp;
+        <select class="page-count" style="height:28px;">
+            <option value="10" {% if numItemsPerPage == 10 %}selected {% endif%} >10条/页</option>
+            <option value="20" {% if numItemsPerPage == 20 %}selected {% endif%}>20条/页</option>
+            <option value="50" {% if numItemsPerPage == 50 %}selected {% endif%}>50条/页</option>
+            <option value="100" {% if numItemsPerPage == 100 %}selected {% endif%}>100条/页</option>
+        </select>
+        <a class="paginate_button previous" data-page="1">First</a>
+        {% if previous is defined %}
+            <a class="paginate_button previous" data-page="prev">{{ 'label_previous'|trans([], 'KnpPaginatorBundle') }}</a>
+        {% else %}
+            <a class="paginate_button previous" data-page="prev">Prev</a>
+        {% endif %}
+        <span>
+
+        {% if startPage > 1 %}
+            <a class="paginate_button" data-page="1">1</a>
+            {% if startPage == 3 %}
+                <a class="paginate_button" data-page="2">2</a>
+            {% elseif startPage != 2 %}
+                <a class="paginate_button" data-page="next-group">&hellip;</a>
+            {% endif %}
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <a class="paginate_button" data-page="{{ page }}">{{ page }}</a>
+            {% else %}
+                <a class="paginate_button current" data-page="{{ page }}">{{ page }}</a>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if pageCount > endPage %}
+            {% if pageCount > (endPage + 1) %}
+                {% if pageCount > (endPage + 2) %}
+                    <a class="paginate_button disabled" data-page="next-group">&hellip;</a>
+                {% else %}
+                    <a class="paginate_button" data-page="{{ pageCount -1 }}">{{ pageCount -1 }}</a>
+                {% endif %}
+            {% endif %}
+            <a class="paginate_button" data-page="{{ pageCount }}">{{ pageCount }}</a>
+        {% endif %}
+
+        </span>
+        {% if next is defined %}
+            <a class="paginate_button next" data-page="next">{{ 'label_next'|trans([], 'KnpPaginatorBundle') }}&nbsp;</a>
+        {% else %}
+            <a class="paginate_button next" data-page="next">Next</a>
+        {% endif %}
+        <a class="paginate_button next last" data-page="{{ pageCount }}" data-total="{{ pageCount }}">Last</a>
+        跳转至&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="jump" style="width:50px;height:28px;" />
+        <a class="paginate_button go next" data-page="go">Go</a>
+    </div>
+{% endif %}

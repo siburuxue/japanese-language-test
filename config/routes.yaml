@@ -1,0 +1,16 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+app_directory:
+    resource: 'routes/common'
+    type: directory
+
+oss-function:
+    path: /oss/index
+    controller: App\Controller\OssController::index
+oss-sts-token-refresh:
+    path: /oss/sts/token/refresh
+    controller: App\Controller\OssController::stsTokenRefresh

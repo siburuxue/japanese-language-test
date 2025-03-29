@@ -1,0 +1,4 @@
+app_directory:
+  resource: '../admin'
+  type: directory
+  prefix: admin/

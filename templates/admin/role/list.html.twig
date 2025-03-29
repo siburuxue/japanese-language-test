@@ -1,0 +1,29 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>规则名称</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for role in pagination %}
+        <tr>
+            <th scope="row">{{ role.id }}</th>
+            <td>{{ role.roleName }}</td>
+            <td>
+                {% if hasPermission('PERMISSION_TREE') %}
+                <button data-name="{{ role.roleName }}" data-url="{{ path(constant_route("PERMISSION_TREE"), {type: 'checkbox',role: role.id} ) }}" class="btn btn-default btn-xs role-permission"><i class="fa fa-search"></i> 查看权限</button>
+                {% endif %}
+                {% if hasPermission('ROLE_EDIT') %}
+                <a href="{{ path(constant_route('ROLE_EDIT'), {id : role.id}) }}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
+                {% endif %}
+                {% if hasPermission('ROLE_DELETE') %}
+                <button type="button" class="btn btn-danger btn-xs table-confirm-change-status" data-url="{{ path(constant_route('ROLE_DELETE'), {'id' : role.id}) }}"><i class="fa fa-trash"></i> 删除</button>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ knp_pagination_render(pagination) }}
