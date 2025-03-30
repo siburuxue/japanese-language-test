@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Lib\Constant\Dict;
 use App\Lib\Constant\Tool;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
@@ -23,6 +24,7 @@ class LogService extends CommonService
         private RoleService $roleService,
         private AdminUserService $adminUserService,
         private PermissionService $permissionService,
+        private DictService $dictService,
     ) {
         parent::__construct($requestStack);
         $this->logRepository = $doctrine->getRepository(Log::class);
@@ -210,5 +212,15 @@ class LogService extends CommonService
         $userGroupInfo = $this->userGroupService->info($data['id']);
         $content = "删除用户组 「" . $userGroupInfo['info']->getGroupName() . "(" . $userGroupInfo['info']->getId() . ")" . "」";
         $this->save($content);
+    }
+
+    public function testPaperInsert(array $data): void
+    {
+        $map = $this->dictService->getDictMap(Dict::DICT_KEY_DIFFICULTY);
+        $difficulty = $data['difficulty'];
+        $content = $data['content'];
+        $json = json_decode($data['content'], 1);
+        $text = "添加题库 「{$json['output']['exam_info']['title']}」难度：「{$map[$difficulty]}」 试卷内容：「{$content}」";
+        $this->save($text);
     }
 }

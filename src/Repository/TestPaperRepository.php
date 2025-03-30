@@ -55,6 +55,7 @@ class TestPaperRepository extends ServiceEntityRepository
     {
         $testPaper = new TestPaper();
         $testPaper->setUid($data['uid']);
+        $testPaper->setTitle($data['title']);
         $testPaper->setCreateUser($data['createUser']);
         $testPaper->setCreateTime($data['createTime']);
         $testPaper->setUpdateUser($data['updateUser']);

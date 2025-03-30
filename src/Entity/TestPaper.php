@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'test_paper')]
 #[ORM\Index(name: 'test-paper_is_del', columns: ['is_del'])]
 #[ORM\Index(name: 'test-paper_uid', columns: ['uid'])]
-#[ORM\Index(name: 'title', columns: ['title'])]
 #[ORM\Entity(repositoryClass: TestPaperRepository::class)]
 class TestPaper
 {
@@ -21,8 +20,8 @@ class TestPaper
     #[ORM\Column(name: "uid", options: ["comment" => "用户ID", "default" => 0])]
     private ?int $uid = 0;
 
-    #[ORM\Column(name: "title", length: 255, nullable: true)]
-    private ?string $title = null;
+    #[ORM\Column(name: "title", length: 255, options: ["comment" => "标题", "default" => ''])]
+    private ?string $title = '';
 
     #[ORM\Column(name: "test_paper_json", type: Types::JSON, options: ["comment" => "题库内容json"])]
     private ?array $testPaperJson = [];
@@ -73,7 +72,7 @@ class TestPaper
         return $this->title;
     }
 
-    public function setTitle(?string $title): static
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 

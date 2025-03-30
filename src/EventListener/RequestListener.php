@@ -37,7 +37,7 @@ class RequestListener
             $uri = $request->getRequestUri();
             // 判断是否是后台管理页面
             if (str_starts_with($uri, Route::ADMIN_ROUTE_PREFIX)) {
-                // todo zp 异步记录操作日志
+                // todo zp 异步记录操作日志, 路由名字来确定唯一性（LogService中的方法名）
                 $this->logService->add($routeName, $param);
                 // 如果未登陆跳转到登录页面
                 if (empty($user) && !in_array($routeName, Permission::UN_LOGIN)) {

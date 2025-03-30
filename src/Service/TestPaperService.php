@@ -55,6 +55,7 @@ class TestPaperService extends CommonService
         $item = $this->getCreateInfo() + $data;
         $item['uid'] = $this->user['id'];
         $item['changeCid'] = Dict::PAPER_CREATOR_CID_MANAGER;
+        $item['title'] = $data['content']['output']['exam_info']['title'];
         return $this->testPaperRepository->insert($item);
     }
 
