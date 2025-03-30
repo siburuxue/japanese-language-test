@@ -197,12 +197,12 @@
                 layer.open({
                     type: 1,
                     title: "设置难度",
-                    area: ["32%", "17%"],
-                    content: $('#listening-recording-box'),
+                    area: ["32%", "20%"],
+                    content: $('#difficulty-box'),
                     btn: ["保存", "取消"],
                     success: function () {
                         $('#set-difficulty').val(difficulty);
-                        $('#listening-recording-box').removeClass('hidden');
+                        $('#difficulty-box').removeClass('hidden');
                     },
                     yes: function (index) {
                         let difficulty = $('#set-difficulty option:selected').val();

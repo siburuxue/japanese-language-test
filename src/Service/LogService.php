@@ -25,6 +25,7 @@ class LogService extends CommonService
         private AdminUserService $adminUserService,
         private PermissionService $permissionService,
         private DictService $dictService,
+        private TestPaperService $testPaperService,
     ) {
         parent::__construct($requestStack);
         $this->logRepository = $doctrine->getRepository(Log::class);
@@ -222,5 +223,24 @@ class LogService extends CommonService
         $json = json_decode($data['content'], 1);
         $text = "添加题库 「{$json['output']['exam_info']['title']}」难度：「{$map[$difficulty]}」 试卷内容：「{$content}」";
         $this->save($text);
+    }
+
+    public function testPaperDelete(array $data): void
+    {
+        $paper = $this->testPaperService->info($data['id']);
+        $content = "删除题库 「" . $paper['title'] . " ({$data['id']})」";
+        $this->save($content);
+    }
+
+    public function testPaperSetDifficulty(array $data): void
+    {
+        $paper = $this->testPaperService->info($data['id']);
+        $map = $this->dictService->getDictMap(Dict::DICT_KEY_DIFFICULTY);
+        $old = $paper['difficulty'];
+        $new = $data['difficulty'];
+        if($new !== $old){
+            $content = "修改题库「{$paper['title']} ({$data['id']})」难度 从「{$map[$old]}」修改为「{$map[$new]}」";
+            $this->save($content);
+        }
     }
 }
