@@ -243,4 +243,19 @@ class LogService extends CommonService
             $this->save($content);
         }
     }
+
+    public function testPaperUploadListeningRecording(array $data): void
+    {
+        $paper = $this->testPaperService->info($data['id']);
+        $url = $data['ossUrl'];
+        $content = "修改题库「{$paper['title']} ({$data['id']})」 上传听力音频文件 「{$url}」";
+        $this->save($content);
+    }
+
+    public function testPaperDeleteListeningRecording(array $data): void
+    {
+        $paper = $this->testPaperService->info($data['id']);
+        $content = "修改题库「{$paper['title']} ({$data['id']})」 删除听力音频文件 ";
+        $this->save($content);
+    }
 }
