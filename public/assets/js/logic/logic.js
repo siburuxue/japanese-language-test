@@ -43,7 +43,9 @@
     $(document).on('click', '.table-confirm-change-status', function () {
         let url = $(this).data('url');
         let tableBox = $(this).parents('.table-box');
-        layer.confirm("确定删除？", function () {
+        let title = $(this).data('text') ?? "删除";
+        let msg = "确定" +title+ "？"
+        layer.confirm(msg, function () {
             Tools.ajax({
                 url,
                 success:function (res) {

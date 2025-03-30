@@ -29,7 +29,7 @@
 
                 {% if paper.listeningRecording %}
                     {% if hasPermission('TEST_PAPER_UPLOAD_LISTENING_RECORDING') %}
-                        <button type="button" class="btn btn-danger btn-xs table-confirm-change-status" data-url="{{ path(constant_route('TEST_PAPER_DELETE_LISTENING_RECORDING'), {'id' : paper.id}) }}"><i class="fa fa-trash"></i> 删除听力音频</button>
+                        <button type="button" class="btn btn-danger btn-xs table-confirm-change-status" data-text="删除听力音频" data-url="{{ path(constant_route('TEST_PAPER_DELETE_LISTENING_RECORDING'), {'id' : paper.id}) }}"><i class="fa fa-trash"></i> 删除听力音频</button>
                     {% endif %}
                 {% else %}
                     {% if hasPermission('TEST_PAPER_UPLOAD_LISTENING_RECORDING') %}
