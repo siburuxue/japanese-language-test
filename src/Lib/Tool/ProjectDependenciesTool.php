@@ -47,10 +47,12 @@ class ProjectDependenciesTool
                 if ($f == "." || $f == "..") {
                     continue;
                 }
-                $f = str_replace('.so', '', $f);
-                if($f !== 'opcache'){
-                    $reflect = new ReflectionExtension($f);
-                    $ext[$f] = $reflect->getVersion();
+                if(str_ends_with($f, ".so")){
+                    $f = str_replace('.so', '', $f);
+                    if($f !== 'opcache'){
+                        $reflect = new ReflectionExtension($f);
+                        $ext[$f] = $reflect->getVersion();
+                    }
                 }
             }
         }
