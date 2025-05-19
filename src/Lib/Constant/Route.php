@@ -96,4 +96,8 @@ class Route
     const TEST_PAPER_DELETE_LISTENING_RECORDING = "test-paper-delete-listening-recording";
  
     const TEST_PAPER_INFO = "test-paper-info";
-}                        
+ 
+    const TEST_PAPER_EDIT = "test-paper-edit";
+ 
+    const TEST_PAPER_UPDATE = "test-paper-update";
+}                                

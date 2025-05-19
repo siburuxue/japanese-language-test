@@ -161,6 +161,11 @@
                                         {% for k1,v1 in question['options'] %}
                                             <div class="col-sm-12 option {{ v1['letter'] }}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="strong">{{ v1['letter'] }}</label>. {{ v1['text'] }}</div>
                                         {% endfor %}
+                                        <div class="col-sm-12 analysis hidden">
+                                            {% if info.testPaperJson.output.reading_analysis is defined %}
+                                            <label class="text-success">解析：{{ info.testPaperJson.output.reading_analysis[k]['questions'][k1]['analysis'] }}</label>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 {% endfor %}
                             {% endfor %}
@@ -185,10 +190,15 @@
                             </div>
                             {% for k1,v1 in article['option_list'] %}
                                 <div class="form-group language-option-box">
-                                    <div class="col-sm-1 question" data-answer="{{ v1['answer'] }}"><label class="strong">{{ k1 + 1 }}. </label></div>
+                                    <div class="col-sm-1 question" data-answer="{{ v1['answer'] }}"><label class="strong">{% if v1['q_no'] is defined %}{{ v1['q_no'] }}{% else %}{{ k1 + 1 }}{% endif %}. </label></div>
                                     {% for k2,option in v1['options'] %}
                                         <div class="col-sm-2 option {{ option['letter'] }}" ><label class="strong">{{ option['letter'] }}</label>. {{ option['text'] }}</div>
                                     {% endfor %}
+                                </div>
+                                <div class="col-sm-12 analysis hidden">
+                                    {% if info.testPaperJson.output.language_usage_analysis is defined %}
+                                    <label class="text-success">解析：{{ info.testPaperJson.output.language_usage_analysis[0]['option_list'][k1]['analysis'] }}</label>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                             {% set article = info.testPaperJson.output.language_usage[1] %}
@@ -252,11 +262,14 @@
                 let status = $(this).data('status');
                 let answer = $(this).parent().data('answer');
                 let option = $(this).parent().siblings('.' + answer);
+                let analysis = $(this).parent().parent().find('.analysis');
                 if(status == "0"){
                     option.addClass('text-success');
+                    analysis.removeClass('hidden');
                     $(this).text('隐藏答案');
                 }else{
                     option.removeClass('text-success');
+                    analysis.addClass('hidden');
                     $(this).text('显示答案');
                 }
                 $(this).data('status', 1 - status);
@@ -266,10 +279,13 @@
                 $('.language-option-box').each(function(){
                     let answer = $(this).find('.question').data('answer');
                     let option = $(this).find('.' + answer);
+                    let analysis = $(this).next();
                     if(status == 0){
                         option.addClass('text-success');
+                        analysis.removeClass('hidden');
                     }else{
                         option.removeClass('text-success');
+                        analysis.addClass('hidden');
                     }
                 });
                 $(this).data('status', 1 - status);

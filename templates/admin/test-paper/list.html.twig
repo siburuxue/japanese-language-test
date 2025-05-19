@@ -20,6 +20,9 @@
             <td>{{ paper.difficulty|dict(difficulty) }}</td>
             <td>{{ paper.id }}</td>
             <td>
+                {% if hasPermission('TEST_PAPER_EDIT') %}
+                    <a type="button" class="btn btn-primary btn-xs" href="{{ path(constant_route('TEST_PAPER_EDIT'), {'id' : paper.id}) }}"><i class="fa fa-pencil"></i> 编辑</a>
+                {% endif %}
                 {% if hasPermission('TEST_PAPER_DELETE') %}
                     <button type="button" class="btn btn-danger btn-xs table-confirm-change-status" data-url="{{ path(constant_route('TEST_PAPER_DELETE'), {'id' : paper.id}) }}"><i class="fa fa-trash"></i> 删除</button>
                 {% endif %}

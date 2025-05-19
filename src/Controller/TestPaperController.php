@@ -9,7 +9,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TestPaperController extends CommonController{
+class TestPaperController extends CommonController {
 
     public function index(Request $request, DictService $dictService): Response
     {
@@ -73,6 +73,18 @@ class TestPaperController extends CommonController{
         $id = $request->query->get("id");
         $info =$testPaperService->info($id);
         return $this->render("admin/test-paper/info.html.twig", ['info' => $info]);
+    }
+
+    public function edit(Request $request, TestPaperService $testPaperService): Response
+    {
+        $id = $request->query->get("id");
+        $info =$testPaperService->info($id);
+        return $this->render("admin/test-paper/edit.html.twig", ['info' => $info]);
+    }
+
+    public function update(Request $request): Response
+    {
+        return new Response("");
     }
 }
      

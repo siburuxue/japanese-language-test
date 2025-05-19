@@ -174,3 +174,9 @@ test-paper-delete-listening-recording:
 test-paper-info:
   path: /test/paper/info
   controller: App\Controller\TestPaperController::info
+test-paper-edit:
+  path: /test/paper/edit
+  controller: App\Controller\TestPaperController::edit
+test-paper-update:
+  path: /test/paper/update
+  controller: App\Controller\TestPaperController::update
